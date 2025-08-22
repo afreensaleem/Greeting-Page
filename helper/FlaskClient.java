@@ -1,4 +1,3 @@
-
 package helper;
 
 import java.io.*;
@@ -7,28 +6,30 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class FlaskClient {
-    public static String sendImageToFlask(InputStream imageInputStream) throws IOException {
-        String flaskUrl = "https://flask-bg-api.onrender.com/remove-bg";
+public class HuggingFaceClient {
 
+    private static final String HF_API_URL = "https://api-inference.huggingface.co/models/AfreenSaleem/background-remover";
+    private static final String HF_API_TOKEN = "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"; // replace with your token
+
+    public static String removeBackground(InputStream imageInputStream) throws IOException {
         String boundary = Long.toHexString(System.currentTimeMillis());
         String LINE_FEED = "\r\n";
 
-        URL url = new URL(flaskUrl);
+        URL url = new URL(HF_API_URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("Authorization", "Bearer " + HF_API_TOKEN);
         conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-        conn.setConnectTimeout(5000);
-        conn.setReadTimeout(10000);
+        conn.setConnectTimeout(10000);
+        conn.setReadTimeout(20000);
 
         try (OutputStream output = conn.getOutputStream();
              PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true)) {
 
-            // Write form data
             writer.append("--").append(boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"image_file\"; filename=\"upload.png\"").append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"upload.png\"").append(LINE_FEED);
             writer.append("Content-Type: image/png").append(LINE_FEED);
             writer.append(LINE_FEED).flush();
 
@@ -43,7 +44,7 @@ public class FlaskClient {
         }
 
         int status = conn.getResponseCode();
-        System.out.println("Flask response code: " + status);  // ✅ helpful debug
+        System.out.println("HF response code: " + status);
 
         if (status == HttpURLConnection.HTTP_OK) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -64,8 +65,8 @@ public class FlaskClient {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                System.err.println("Error from Flask: " + response.toString());  // ✅ helpful log
-                throw new IOException("Flask API error: " + response.toString());
+                System.err.println("Error from HF: " + response.toString());
+                throw new IOException("Hugging Face API error: " + response.toString());
             }
         }
     }
