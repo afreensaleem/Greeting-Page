@@ -6,7 +6,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy your JSP project into Tomcat's webapps folder
 # Assuming your project folder is named Greeting-Page
-COPY Greeting-Page /usr/local/tomcat/webapps/ROOT
+COPY . /usr/local/tomcat/webapps/ROOT
 
 # Expose Tomcat default port
 EXPOSE 8080
