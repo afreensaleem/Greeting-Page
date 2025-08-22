@@ -1,225 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Anniversary Card</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Audiowide&family=Playwrite+US+Trad:wght@100..400&display=swap" rel="stylesheet">
-<style>
-body {
-    margin:0;
-    background-color:#e3d5ca;
-    font-family: Arial, sans-serif;
-}
+    <meta charset="UTF-8">
+    <title>Custom Form</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffd1dc;
+            font-family: Arial, sans-serif;
+        }
 
-/* Form styling */
-.custom-form {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    width:320px;
-    padding:20px;
-    background-color:#fff;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    margin:20px auto;
-}
-.custom-form input, .custom-form button {
-    padding:10px;
-    font-size:16px;
-    border-radius:8px;
-    border:1px solid #ccc;
-}
-.custom-form button {
-    cursor:pointer;
-    background-color:#c1f0dc;
-    border:none;
-    border-radius:50px;
-}
-.custom-form button:hover {
-    background-color:#aee8d2;
-}
+        .custom-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 320px;
+            padding: 25px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
 
-/* Card container */
-#cardPreview {
-    position:relative;
-    width:700px;
-    height:900px;
-    margin:30px auto;
-    background-color:#ffc2d1;
-    overflow:hidden;
-    box-shadow:0 5px 15px rgba(0,0,0,0.2);
-    display:none;
-}
+        .custom-form label {
+            font-weight: bold;
+        }
 
-/* Fonts */
-.anton-sc-regular { font-family: "Anton SC", sans-serif; font-weight:400; }
-.audiowide-regular { font-family:"Audiowide",sans-serif;font-weight:400;font-size:30px; }
-.playwrite-us-trad-cursive { font-family:"Playwrite US Trad",cursive;font-weight:100; }
+        .custom-form input[type="text"],
+        .custom-form input[type="file"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-/* Main image */
-#mainImageDisplay{
-    position:absolute;
-    left:50%;
-    top:50%;
-    width:200px;
-    height:270px;
-    transform:translate(-50%,-50%) scale(0.8);
-    border:3px solid #fff;
-    opacity:0.88;
-    z-index:1;
-}
+        .custom-form button {
+            padding: 12px;
+            font-size: 16px;
+            width: 100%;
+            border: none;
+            border-radius: 50px; /* Full rounded sides for semi-circular effect */
+            background-color: #c1f0dc; /* pastel green */
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-/* Background removed image */
-#bgRemovedDisplay{
-    position:absolute;
-    bottom:100px;
-    left:50px;
-    width:130px;
-    height:170px;
-    z-index:3;
-    animation: fade-in 2s;
-}
+        .custom-form button:hover {
+            background-color: #aee8d2; /* slightly darker pastel green */
+        }
+    </style>
 
-/* Frames */
-.frame{
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-45%,-3%) rotate(7deg);
-    width:180px;
-    height:250px;
-    background:#d4d7dd;
-    border:30px solid #fff;
-    box-shadow:0 0 21px 3px rgba(0,0,0,0.5) inset, 0 15px 54px 10px rgba(0,0,0,0.3);
-    padding:16px;
-    border-radius:12px;
-    z-index:4;
-    animation: fade-down 0.8s;
-}
-
-/* Heart */
-#heart{
-    position:absolute;
-    top:50px;
-    left:250px;
-    width:80px;
-    height:80px;
-    animation: upDown 2s infinite ease-in-out;
-}
-
-/* Bee animations */
-#bee1, #bee2{
-    position:absolute;
-    width:50px;
-    height:50px;
-}
-#bee1{ top:400px; left:250px; animation: fly1 3s infinite alternate ease-in-out; }
-#bee2{ top:420px; left:280px; animation: fly2 4s infinite alternate ease-in-out; }
-
-@keyframes upDown {
-    0%{ transform:translateY(0);}
-    50%{ transform:translateY(-30px);}
-    100%{ transform:translateY(0);}
-}
-@keyframes fade-in{
-    0%{opacity:0;height:0;width:0;}
-    100%{opacity:1;height:170px;width:130px;}
-}
-@keyframes fade-down{
-    0%{opacity:0;transform:rotate(0deg) scale(0.9);}
-    100%{opacity:1;transform:rotate(7deg) scale(1);}
-}
-@keyframes fly1{
-    0%{transform:translate(0,0) rotate(0deg);}
-    50%{transform:translate(20px,-10px) rotate(15deg);}
-    100%{transform:translate(0,0) rotate(0deg);}
-}
-@keyframes fly2{
-    0%{transform:translate(0,0) rotate(0deg);}
-    50%{transform:translate(-20px,-15px) rotate(-15deg);}
-    100%{transform:translate(0,0) rotate(0deg);}
-}
-
-/* Section text */
-#cardText{
-    position:absolute;
-    top:20px;
-    width:100%;
-    text-align:center;
-    color:#f08080;
-}
-#cardText h1{animation: fade-in 2s;}
-#cardText h2{font-family:"Playwrite US Trad",cursive;font-weight:100;}
-</style>
 </head>
 <body>
 
-<form id="greetingForm" class="custom-form">
-    <label>Name:</label>
-    <input type="text" id="name1" required>
-    <label>Tagline:</label>
-    <input type="text" id="name2" required>
-    <label>Main Image:</label>
-    <input type="file" id="mainImage" accept="image/*" required>
-    <label>Image for Background Removal:</label>
-    <input type="file" id="bgImage" accept="image/*" required>
-    <button type="submit">Create Card</button>
+<form id="greetingForm" class="custom-form" action="celeb.jsp" method="post" enctype="multipart/form-data">
+    <label for="name1">Name:</label>
+    <input type="text" name="name1" id="name1" required />
+
+    <label for="name2">Your Tag Line:</label>
+    <input type="text" name="name2" id="name2" required />
+
+    <label for="image">Select Image:</label>
+    <input type="file" name="mainImage" id="mainImage" required />
+
+    <label for="bgImage">Upload image to remove background:</label>
+    <input type="file" name="bgImage" id="bgImage" required>
+    <input type="hidden" id="bgRemovedImage" name="bgRemovedImage" />
+
+    
+
+
+    <button type="submit">Submit</button>
 </form>
 
-<div id="cardPreview">
-    <div id="cardText">
-        <h1 id="displayName"></h1>
-        <h2 id="displayTagline"></h2>
-    </div>
-    <img id="mainImageDisplay" alt="Main Image">
-    <img id="bgRemovedDisplay" alt="BG Removed">
-    <img id="heart" src="heart.gif" alt="Heart">
-    <img id="bee1" src="bee.png" alt="Bee 1">
-    <img id="bee2" src="bee.png" alt="Bee 2">
-    <div class="frame"></div>
-</div>
-
 <script>
-document.getElementById('greetingForm').addEventListener('submit', async function(e){
-    e.preventDefault();
-    const name = document.getElementById('name1').value;
-    const tagline = document.getElementById('name2').value;
-    const mainFile = document.getElementById('mainImage').files[0];
-    const bgFile = document.getElementById('bgImage').files[0];
+document.getElementById('greetingForm').addEventListener('submit', async function(event) {
+  event.preventDefault(); // Stop form from submitting immediately
 
-    if(!mainFile || !bgFile){ alert("Select both images"); return; }
+  const bgFileInput = document.getElementById('bgImage');
+  const file = bgFileInput.files[0];
 
-    // Display main image
-    const mainReader = new FileReader();
-    mainReader.onload = () => { document.getElementById('mainImageDisplay').src = mainReader.result; };
-    mainReader.readAsDataURL(mainFile);
+  if (!file) {
+    alert("Please upload image for background removal.");
+    return;
+  }
 
-    // Set text
-    document.getElementById('displayName').textContent = name;
-    document.getElementById('displayTagline').textContent = tagline;
+  const formData = new FormData();
+  formData.append('image_file', file);
 
-    // Send background removal image to Flask API
-    const formData = new FormData();
-    formData.append('file', bgFile);
+  try {
+    const response = await fetch('https://flask-bg-api.onrender.com/remove-bg', {
+      method: 'POST',
+      body: formData
+    });
 
-    try {
-        const response = await fetch('https://AfreenSaleem-background-remover.hf.space/remove_bg',{
-            method:'POST',
-            body:formData
-        });
-        if(!response.ok){throw new Error("API request failed");}
-        const blob = await response.blob();
-        const reader = new FileReader();
-        reader.onloadend = () => { document.getElementById('bgRemovedDisplay').src = reader.result; };
-        reader.readAsDataURL(blob);
+    const blob = await response.blob();
+    const reader = new FileReader();
 
-        document.getElementById('cardPreview').style.display='block';
-    } catch(err){
-        console.error(err);
-        alert("Background removal failed");
-    }
+    reader.onloadend = () => {
+      // Save the base64 image to hidden input
+      document.getElementById('bgRemovedImage').value = reader.result;
+
+      // ✅ Now submit the form to JSP page
+      event.target.submit();
+    };
+
+    reader.readAsDataURL(blob); // Convert blob to base64
+  } catch (err) {
+    console.error("Background removal failed", err);
+    alert("Could not remove background. Please try again.");
+  }
 });
 </script>
 
