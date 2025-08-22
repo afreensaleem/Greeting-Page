@@ -9,7 +9,7 @@ import java.util.Base64;
 public class HuggingFaceClient {
 
     private static final String HF_API_URL = "https://api-inference.huggingface.co/models/AfreenSaleem/background-remover";
-    private static final String HF_API_TOKEN = "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"; // replace with your token
+    private static final String HF_API_TOKEN = "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"; // replace with your token
 
     public static String removeBackground(InputStream imageInputStream) throws IOException {
         String boundary = Long.toHexString(System.currentTimeMillis());
