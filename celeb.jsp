@@ -47,7 +47,7 @@ try {
               InputStream inputStream = item.getInputStream();
               byte[] bytes = IOUtils.toByteArray(inputStream);
               base64Image = java.util.Base64.getEncoder().encodeToString(bytes);
-          } else if ("bgImage".equals(fieldName)) {
+          } else if ("file".equals(fieldName)) {
               // Process the image for background removal
               InputStream inputStream = item.getInputStream();
               byte[] bytes = IOUtils.toByteArray(inputStream);
