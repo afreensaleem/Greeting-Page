@@ -8,7 +8,7 @@ import java.util.Base64;
 public class FlaskClient {
 
     private static final String HF_API_URL = "https://api-inference.huggingface.co/models/AfreenSaleem/background-remover";
-    private static final String HF_TOKEN = "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";
+    private static final String HF_TOKEN = "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";
 
     public static String sendImageToFlask(InputStream imageInputStream) throws IOException {
         URL url = new URL(HF_API_URL);
