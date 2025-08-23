@@ -1,4 +1,6 @@
-package helper;
+
+
+    package helper;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -8,26 +10,26 @@ import java.util.Base64;
 
 public class HuggingFaceClient {
 
-    private static final String HF_API_URL = "https://api-inference.huggingface.co/models/AfreenSaleem/background-remover";
-    private static final String HF_API_TOKEN = "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"; // replace with your token
+    private static final String API_URL = "https://api-inference.huggingface.co/models/AfreenSaleem/background-remover";
+    private static final String TOKEN = "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";  // Replace with your HF token
 
-    public static String removeBackground(InputStream imageInputStream) throws IOException {
+    public static String sendImageToHF(InputStream imageInputStream) throws IOException {
+
         String boundary = Long.toHexString(System.currentTimeMillis());
         String LINE_FEED = "\r\n";
 
-        URL url = new URL(HF_API_URL);
+        URL url = new URL(API_URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Authorization", "Bearer " + HF_API_TOKEN);
-        conn.setRequestProperty("Content-Type", "application/octet-stream; boundary=" + boundary);
-        conn.setConnectTimeout(10000);
-        conn.setReadTimeout(20000);
+        conn.setRequestProperty("Authorization", "Bearer " + TOKEN);
+        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
 
         try (OutputStream output = conn.getOutputStream();
              PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true)) {
 
+            // Write the file under "file" key as expected by HF API
             writer.append("--").append(boundary).append(LINE_FEED);
             writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"upload.png\"").append(LINE_FEED);
             writer.append("Content-Type: image/png").append(LINE_FEED);
@@ -44,8 +46,6 @@ public class HuggingFaceClient {
         }
 
         int status = conn.getResponseCode();
-        System.out.println("HF response code: " + status);
-
         if (status == HttpURLConnection.HTTP_OK) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             try (InputStream is = conn.getInputStream()) {
@@ -65,8 +65,7 @@ public class HuggingFaceClient {
                 while ((line = reader.readLine()) != null) {
                     response.append(line);
                 }
-                System.err.println("Error from HF: " + response.toString());
-                throw new IOException("Hugging Face API error: " + response.toString());
+                throw new IOException("HF API error: " + response.toString());
             }
         }
     }
