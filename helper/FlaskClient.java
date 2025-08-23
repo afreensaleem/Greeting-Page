@@ -7,53 +7,41 @@ import java.util.Base64;
 
 public class FlaskClient {
 
-    // Replace this with your actual Hugging Face Space API URL
-    private static final String SPACE_URL = "https://hf.space/embed/AfreenSaleem/background-remover/api/predict/";
+    private static final String HF_API_URL = "https://api-inference.huggingface.co/models/AfreenSaleem/background-remover";
+    private static final String HF_TOKEN = "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";
 
     public static String sendImageToFlask(InputStream imageInputStream) throws IOException {
-        // Read image bytes
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int n;
-        while ((n = imageInputStream.read(buffer)) != -1) {
-            baos.write(buffer, 0, n);
-        }
-        byte[] imageBytes = baos.toByteArray();
-        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-
-        // Prepare JSON payload
-        String jsonPayload = "{ \"data\": [\"data:image/png;base64," + base64Image + "\"] }";
-
-        URL url = new URL(SPACE_URL);
+        URL url = new URL(HF_API_URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "Bearer " + HF_TOKEN);
+        conn.setRequestProperty("Content-Type", "application/octet-stream");
 
+        // Send image bytes
         try (OutputStream os = conn.getOutputStream()) {
-            os.write(jsonPayload.getBytes());
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = imageInputStream.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
             os.flush();
         }
 
         int status = conn.getResponseCode();
+        InputStream responseStream = (status == 200) ? conn.getInputStream() : conn.getErrorStream();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buf = new byte[4096];
+        int len;
+        while ((len = responseStream.read(buf)) != -1) {
+            baos.write(buf, 0, len);
+        }
+
         if (status != 200) {
-            throw new IOException("Failed : HTTP error code : " + status);
+            throw new IOException("HF API error: " + new String(baos.toByteArray()));
         }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
-        }
-        conn.disconnect();
-
-        // The HF Space returns JSON: {"data":["<base64_image>"]}
-        String resultJson = sb.toString();
-        int start = resultJson.indexOf("[\"") + 2;
-        int end = resultJson.indexOf("\"]");
-        String resultBase64 = resultJson.substring(start, end);
-
-        return resultBase64;
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 }
