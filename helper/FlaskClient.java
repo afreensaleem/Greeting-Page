@@ -21,7 +21,7 @@ public class HuggingFaceClient {
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Authorization", "Bearer " + HF_API_TOKEN);
-        conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+        conn.setRequestProperty("Content-Type", "application/octet-stream; boundary=" + boundary);
         conn.setConnectTimeout(10000);
         conn.setReadTimeout(20000);
 
