@@ -89,16 +89,15 @@ document.getElementById('greetingForm').addEventListener('submit', async functio
   }
 
   // Prepare the Hugging Face request
-  const formData = new FormData();
-  formData.append('file', file);
+ 
     const arrayBuffer = await file.arrayBuffer(); 
 
   try {
     const response = await fetch('https://api-inference.huggingface.co/models/AfreenSaleem/background-remover', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer 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' , // <-- replace with your token
-         'Content-Type': 'application/octet-stream'
+        'Authorization': 'Bearer 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'  // <-- replace with your token
+         
       },
       body: arrayBuffer
     });
