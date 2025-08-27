@@ -8,6 +8,9 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 # Assuming your project folder is named Greeting-Page
 COPY . /usr/local/tomcat/webapps/ROOT
 
+# Copy org.json library to WEB-INF/lib
+COPY json-20240303.jar /usr/local/tomcat/webapps/ROOT/WEB-INF/lib/
+
 # Expose Tomcat default port
 EXPOSE 8080
 
