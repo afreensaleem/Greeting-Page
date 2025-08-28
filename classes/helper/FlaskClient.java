@@ -7,7 +7,7 @@ import java.util.Base64;
 
 public class FlaskClient {
 
-    private static final String HF_API_URL = "https://afreensaleem-background-remover.hf.space/api/predict"";
+    private static final String HF_API_URL = "https://afreensaleem-background-remover.hf.space/api/predict";
     private static final String HF_TOKEN = "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";
 
     public static String sendImageToFlask(InputStream imageInputStream) throws IOException {
