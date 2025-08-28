@@ -17,6 +17,8 @@ public class FlaskClient {
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Authorization", "Bearer " + HF_TOKEN);
         conn.setRequestProperty("Content-Type", "application/octet-stream");
+        conn.setConnectTimeout(10000);
+        conn.setReadTimeout(30000);
 
         // Send image bytes
         try (OutputStream os = conn.getOutputStream()) {
