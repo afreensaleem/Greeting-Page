@@ -14,7 +14,7 @@ RUN mkdir -p /usr/local/tomcat/webapps/ROOT/WEB-INF/lib && \
 
 # Set the Hugging Face token as an environment variable
 # Replace 'your-huggingface-token' with your actual token or pass it at runtime
-ENV HUGGINGFACE_TOKEN= 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
+ENV HF_TOKEN= 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
 
 # Expose Tomcat default port
 EXPOSE 8080
