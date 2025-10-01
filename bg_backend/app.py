@@ -9,6 +9,10 @@ HF_TOKEN = os.getenv("HF_TOKEN")  # replace with your Hugging Face token
 HF_MODEL = "briaai/RMBG-1.4"
 HF_URL = f"https://api-inference.huggingface.co/models/{HF_MODEL}"
 
+@app.route("/")
+def home():
+    return "Background remover API is running
+
 @app.route("/remove-bg", methods=["POST"])
 def remove_bg():
     if 'file' not in request.files:
