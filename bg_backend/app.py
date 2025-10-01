@@ -13,7 +13,7 @@ HF_URL = f"https://api-inference.huggingface.co/models/{HF_MODEL}"
 
 @app.route("/")
 def home():
-    return "Background remover API is running
+    return "Background remover API is running"
 
 @app.route("/remove-bg", methods=["POST"])
 def remove_bg():
