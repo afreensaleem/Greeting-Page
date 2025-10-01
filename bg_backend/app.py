@@ -4,7 +4,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 
-HF_TOKEN = "YOUR_HF_TOKEN"  # replace with your Hugging Face token
+HF_TOKEN = "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"  # replace with your Hugging Face token
 HF_MODEL = "briaai/RMBG-1.4"
 HF_URL = f"https://api-inference.huggingface.co/models/{HF_MODEL}"
 
