@@ -1,9 +1,11 @@
 from flask import Flask, request, send_file
+from flask_cors import CORS
 import requests
 from io import BytesIO
 import os  
 
 app = Flask(__name__)
+CORS(app)
 
 HF_TOKEN = os.getenv("HF_TOKEN")  # replace with your Hugging Face token
 HF_MODEL = "briaai/RMBG-1.4"
