@@ -28,6 +28,25 @@ def remove_bg():
         return f"Hugging Face error: {resp.status_code}", 500
 
     return send_file(BytesIO(resp.content), mimetype="image/png")
+
+
+@app.route("/remove-bg", methods=["POST"])
+def remove_bg():
+    if 'file' not in request.files:
+        return "No file uploaded", 400
+
+    file = request.files['file']
+    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+
+    resp = requests.post(HF_URL, headers=headers, data=file.read())
+    print("Status code:", resp.status_code)
+    print("Response content (first 500 chars):", resp.text[:500])
+
+    if resp.status_code != 200:
+        return f"Hugging Face error: {resp.status_code} - {resp.text[:500]}", 500
+
+    return send_file(BytesIO(resp.content), mimetype="image/png")
+
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
