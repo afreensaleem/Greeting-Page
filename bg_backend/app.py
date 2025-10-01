@@ -18,8 +18,9 @@ def home():
 
 @app.route("/remove-bg", methods=["POST"])
 def remove_bg():
-    if 'file' not in request.files:
-        return "No file uploaded", 400
+     if 'file' not in request.files:
+        return {"error": "No file uploaded"}, 400
+
 
     file = request.files['file']
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
@@ -27,12 +28,20 @@ def remove_bg():
     # Send the image to Hugging Face
     resp = requests.post(HF_URL, headers=headers, data=file.read())
 
-    # Debugging info to check Hugging Face errors
+ print("==== Hugging Face Debug Info ====")
     print("Status code:", resp.status_code)
-    print("Response content (first 500 chars):", resp.text[:500])
+    print("Headers:", resp.headers)
+    print("Response (first 500 chars):", resp.text[:500])
+    print("===============================")
 
-    if resp.status_code != 200:
-        return f"Hugging Face error: {resp.status_code} - {resp.text[:500]}", 500
+if resp.status_code != 200:
+        return {
+            "error": "Hugging Face request failed",
+            "status_code": resp.status_code,
+            "details": resp.text
+        }, resp.status_code
+
+
 
     # Return the resulting image
     return send_file(BytesIO(resp.content), mimetype="image/png")
